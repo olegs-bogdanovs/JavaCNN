@@ -10,18 +10,10 @@ import edu.hitsz.c102c.util.TimedTest.TestTask;
 
 public class Util {
 
-	/**
-	 * ¾ØÕó¶ÔÓ¦ÔªËØÏà³ËÊ±ÔÚÃ¿¸öÔªËØÉÏµÄ²Ù×÷
-	 * 
-	 * @author jiqunpeng
-	 * 
-	 *         ´´½¨Ê±¼ä£º2014-7-9 ÏÂÎç9:28:35
-	 */
 	public interface Operator extends Serializable {
 		public double process(double value);
 	}
 
-	// ¶¨ÒåÃ¿¸öÔªËØvalue¶¼½øĞĞ1-valueµÄ²Ù×÷
 	public static final Operator one_value = new Operator() {
 		/**
 		 * 
@@ -34,7 +26,7 @@ public class Util {
 		}
 	};
 
-	// digmodº¯Êı
+	// digmodï¿½ï¿½ï¿½ï¿½
 	public static final Operator digmod = new Operator() {
 		/**
 		 * 
@@ -51,9 +43,7 @@ public class Util {
 		public double process(double a, double b);
 	}
 
-	/**
-	 * ¶¨Òå¾ØÕó¶ÔÓ¦ÔªËØµÄ¼Ó·¨²Ù×÷
-	 */
+
 	public static final OperatorOnTwo plus = new OperatorOnTwo() {
 		/**
 		 * 
@@ -65,9 +55,7 @@ public class Util {
 			return a + b;
 		}
 	};
-	/**
-	 * ¶¨Òå¾ØÕó¶ÔÓ¦ÔªËØµÄ³Ë·¨²Ù×÷
-	 */
+
 	public static OperatorOnTwo multiply = new OperatorOnTwo() {
 		/**
 		 * 
@@ -80,9 +68,6 @@ public class Util {
 		}
 	};
 
-	/**
-	 * ¶¨Òå¾ØÕó¶ÔÓ¦ÔªËØµÄ¼õ·¨²Ù×÷
-	 */
 	public static OperatorOnTwo minus = new OperatorOnTwo() {
 		/**
 		 * 
@@ -104,16 +89,10 @@ public class Util {
 		System.out.println();
 	}
 
-	/**
-	 * ¶Ô¾ØÕó½øĞĞ180¶ÈĞı×ª,ÊÇÔÚmatrixµÄ¸±±¾ÉÏ¸´ÖÆ£¬²»»á¶ÔÔ­À´µÄ¾ØÕó½øĞĞĞŞ¸Ä
-	 * 
-	 * @param matrix
-	 */
 	public static double[][] rot180(double[][] matrix) {
 		matrix = cloneMatrix(matrix);
 		int m = matrix.length;
 		int n = matrix[0].length;
-		// °´ÁĞ¶Ô³Æ½øĞĞ½»»»
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n / 2; j++) {
 				double tmp = matrix[i][j];
@@ -121,7 +100,6 @@ public class Util {
 				matrix[i][n - 1 - j] = tmp;
 			}
 		}
-		// °´ĞĞ¶Ô³Æ½øĞĞ½»»»
 		for (int j = 0; j < n; j++) {
 			for (int i = 0; i < m / 2; i++) {
 				double tmp = matrix[i][j];
@@ -134,20 +112,12 @@ public class Util {
 
 	private static Random r = new Random(2);
 
-	/**
-	 * Ëæ»ú³õÊ¼»¯¾ØÕó
-	 * 
-	 * @param x
-	 * @param y
-	 * @param b
-	 * @return
-	 */
 	public static double[][] randomMatrix(int x, int y, boolean b) {
 		double[][] matrix = new double[x][y];
 		int tag = 1;
 		for (int i = 0; i < x; i++) {
 			for (int j = 0; j < y; j++) {
-				// Ëæ»úÖµÔÚ[-0.05,0.05)Ö®¼ä£¬ÈÃÈ¨ÖØ³õÊ¼»¯Öµ½ÏĞ¡£¬ÓĞÀûÓÚÓÚ±ÜÃâ¹ıÄâºÏ
+				// ï¿½ï¿½ï¿½Öµï¿½ï¿½[-0.05,0.05)Ö®ï¿½ä£¬ï¿½ï¿½È¨ï¿½Ø³ï¿½Ê¼ï¿½ï¿½Öµï¿½ï¿½Ğ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				matrix[i][j] = (r.nextDouble() - 0.05) / 10;
 //				matrix[i][j] = tag * 0.5;
 //				if (b)
@@ -159,12 +129,6 @@ public class Util {
 		return matrix;
 	}
 
-	/**
-	 * Ëæ»ú³õÊ¼»¯Ò»Î¬ÏòÁ¿
-	 * 
-	 * @param len
-	 * @return
-	 */
 	public static double[] randomArray(int len) {
 		double[] data = new double[len];
 		for (int i = 0; i < len; i++) {
@@ -174,13 +138,6 @@ public class Util {
 		return data;
 	}
 
-	/**
-	 * Ëæ»úÅÅÁĞµÄ³éÑù£¬Ëæ»ú³éÈ¡batchSize¸ö[0,size)µÄÊé
-	 * 
-	 * @param size
-	 * @param batchSize
-	 * @return
-	 */
 	public static int[] randomPerm(int size, int batchSize) {
 		Set<Integer> set = new HashSet<Integer>();
 		while (set.size() < batchSize) {
@@ -193,12 +150,6 @@ public class Util {
 		return randPerm;
 	}
 
-	/**
-	 * ¸´ÖÆ¾ØÕó
-	 * 
-	 * @param matrix
-	 * @return
-	 */
 	public static double[][] cloneMatrix(final double[][] matrix) {
 
 		final int m = matrix.length;
@@ -213,13 +164,6 @@ public class Util {
 		return outMatrix;
 	}
 
-	/**
-	 * ¶Ôµ¥¸ö¾ØÕó½øĞĞ²Ù×÷
-	 * 
-	 * @param ma
-	 * @param operator
-	 * @return
-	 */
 	public static double[][] matrixOp(final double[][] ma, Operator operator) {
 		final int m = ma.length;
 		int n = ma[0].length;
@@ -232,26 +176,13 @@ public class Util {
 
 	}
 
-	/**
-	 * Á½¸öÎ¬¶ÈÏàÍ¬µÄ¾ØÕó¶ÔÓ¦ÔªËØ²Ù×÷,µÃµ½µÄ½á¹û·½·¨mbÖĞ£¬¼´mb[i][j] = (op_a
-	 * ma[i][j]) op (op_b mb[i][j])
-	 * 
-	 * @param ma
-	 * @param mb
-	 * @param operatorB
-	 *            ÔÚµÚmb¾ØÕóÉÏµÄ²Ù×÷
-	 * @param operatorA
-	 *            ÔÚma¾ØÕóÔªËØÉÏµÄ²Ù×÷
-	 * @return
-	 * 
-	 */
 	public static double[][] matrixOp(final double[][] ma, final double[][] mb,
 			final Operator operatorA, final Operator operatorB,
 			OperatorOnTwo operator) {
 		final int m = ma.length;
 		int n = ma[0].length;
 		if (m != mb.length || n != mb[0].length)
-			throw new RuntimeException("Á½¸ö¾ØÕó´óĞ¡²»Ò»ÖÂ ma.length:" + ma.length
+			throw new RuntimeException("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¡ï¿½ï¿½Ò»ï¿½ï¿½ ma.length:" + ma.length
 					+ "  mb.length:" + mb.length);
 
 		for (int i = 0; i < m; i++) {
@@ -268,13 +199,6 @@ public class Util {
 		return mb;
 	}
 
-	/**
-	 * ¿ËÂŞÄÚ¿Ë»ı,¶Ô¾ØÕó½øĞĞÀ©Õ¹
-	 * 
-	 * @param matrix
-	 * @param scale
-	 * @return
-	 */
 	public static double[][] kronecker(final double[][] matrix, final Size scale) {
 		final int m = matrix.length;
 		int n = matrix[0].length;
@@ -292,13 +216,6 @@ public class Util {
 		return outMatrix;
 	}
 
-	/**
-	 * ¶Ô¾ØÕó½øĞĞ¾ùÖµËõĞ¡
-	 * 
-	 * @param matrix
-	 * @param scaleSize
-	 * @return
-	 */
 	public static double[][] scaleMatrix(final double[][] matrix,
 			final Size scale) {
 		int m = matrix.length;
@@ -307,7 +224,7 @@ public class Util {
 		final int sn = n / scale.y;
 		final double[][] outMatrix = new double[sm][sn];
 		if (sm * scale.x != m || sn * scale.y != n)
-			throw new RuntimeException("scale²»ÄÜÕû³ımatrix");
+			throw new RuntimeException("scaleï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½matrix");
 		final int size = scale.x * scale.y;
 		for (int i = 0; i < sm; i++) {
 			for (int j = 0; j < sn; j++) {
@@ -323,20 +240,13 @@ public class Util {
 		return outMatrix;
 	}
 
-	/**
-	 * ¼ÆËãfullÄ£Ê½µÄ¾í»ı
-	 * 
-	 * @param matrix
-	 * @param kernel
-	 * @return
-	 */
 	public static double[][] convnFull(double[][] matrix,
 			final double[][] kernel) {
 		int m = matrix.length;
 		int n = matrix[0].length;
 		final int km = kernel.length;
 		final int kn = kernel[0].length;
-		// À©Õ¹¾ØÕó
+		// ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½
 		final double[][] extendMatrix = new double[m + 2 * (km - 1)][n + 2
 				* (kn - 1)];
 		for (int i = 0; i < m; i++) {
@@ -346,13 +256,6 @@ public class Util {
 		return convnValid(extendMatrix, kernel);
 	}
 
-	/**
-	 * ¼ÆËãvalidÄ£Ê½µÄ¾í»ı
-	 * 
-	 * @param matrix
-	 * @param kernel
-	 * @return
-	 */
 	public static double[][] convnValid(final double[][] matrix,
 			double[][] kernel) {
 		//kernel = rot180(kernel);
@@ -360,11 +263,11 @@ public class Util {
 		int n = matrix[0].length;
 		final int km = kernel.length;
 		final int kn = kernel[0].length;
-		// ĞèÒª×ö¾í»ıµÄÁĞÊı
+		// ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		int kns = n - kn + 1;
-		// ĞèÒª×ö¾í»ıµÄĞĞÊı
+		// ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		final int kms = m - km + 1;
-		// ½á¹û¾ØÕó
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		final double[][] outMatrix = new double[kms][kns];
 
 		for (int i = 0; i < kms; i++) {
@@ -382,13 +285,6 @@ public class Util {
 
 	}
 
-	/**
-	 * ÈıÎ¬¾ØÕóµÄ¾í»ı,ÕâÀïÒªÇóÁ½¸ö¾ØÕóµÄÒ»Î¬ÏàÍ¬
-	 * 
-	 * @param matrix
-	 * @param kernel
-	 * @return
-	 */
 	public static double[][] convnValid(final double[][][][] matrix,
 			int mapNoX, double[][][][] kernel, int mapNoY) {
 		int m = matrix.length;
@@ -401,8 +297,8 @@ public class Util {
 		int kns = n - kn + 1;
 		int khs = h - kh + 1;
 		if (matrix.length != kernel.length)
-			throw new RuntimeException("¾ØÕóÓë¾í»ıºËÔÚµÚÒ»Î¬ÉÏ²»Í¬");
-		// ½á¹û¾ØÕó
+			throw new RuntimeException("");
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		final double[][][] outMatrix = new double[kms][kns][khs];
 		for (int i = 0; i < kms; i++) {
 			for (int j = 0; j < kns; j++)
@@ -425,13 +321,6 @@ public class Util {
 		return 1 / (1 + Math.pow(Math.E, -x));
 	}
 
-	/**
-	 * ¶Ô¾ØÕóÔªËØÇóºÍ
-	 * 
-	 * @param error
-	 * @return ×¢ÒâÕâ¸öÇóºÍºÜ¿ÉÄÜ»áÒç³ö
-	 */
-
 	public static double sum(double[][] error) {
 		int m = error.length;
 		int n = error[0].length;
@@ -444,13 +333,6 @@ public class Util {
 		return sum;
 	}
 
-	/**
-	 * ¶Ôerrors[...][j]ÔªËØÇóºÍ
-	 * 
-	 * @param errors
-	 * @param j
-	 * @return
-	 */
 	public static double[][] sum(double[][][][] errors, int j) {
 		int m = errors[0][j].length;
 		int n = errors[0][j][0].length;
@@ -481,9 +363,6 @@ public class Util {
 
 	}
 
-	/**
-	 * ²âÊÔ¾í»ı,²âÊÔ½á¹û£º4ºËÏÂ²¢·¢²¢ĞĞµÄ¾í»ıÌá¸ß²»µ½2±¶
-	 */
 	private static void testConvn() {
 		int count = 1;
 		double[][] m = new double[5][5];
@@ -607,12 +486,6 @@ public class Util {
 		System.out.println(a.equals(b));
 	}
 
-	/**
-	 * È¡×î´óµÄÔªËØµÄÏÂ±ê
-	 * 
-	 * @param out
-	 * @return
-	 */
 	public static int getMaxIndex(double[] out) {
 		double max = out[0];
 		int index = 0;

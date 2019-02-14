@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Dataset {
-	// ±£´æÊı¾İ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	private List<Record> records;
-	// Àà±ğÏÂ±ê
+	// ï¿½ï¿½ï¿½ï¿½Â±ï¿½
 	private int lableIndex;
 
 	private double maxLable = -1;
@@ -49,21 +49,11 @@ public class Dataset {
 		records.add(record);
 	}
 
-	/**
-	 * Çå¿ÕÊı¾İ
-	 */
+
 	public void clear() {
 		records.clear();
 	}
 
-	/**
-	 * Ìí¼ÓÒ»¸ö¼ÇÂ¼
-	 * 
-	 * @param attrs
-	 *            ¼ÇÂ¼µÄÊôĞÔ
-	 * @param lable
-	 *            ¼ÇÂ¼µÄÀà±ê
-	 */
 	public void append(double[] attrs, Double lable) {
 		records.add(new Record(attrs, lable));
 	}
@@ -72,12 +62,6 @@ public class Dataset {
 		return records.iterator();
 	}
 
-	/**
-	 * »ñÈ¡µÚindexÌõ¼ÇÂ¼µÄÊôĞÔ
-	 * 
-	 * @param index
-	 * @return
-	 */
 	public double[] getAttrs(int index) {
 		return records.get(index).getAttrs();
 	}
@@ -86,17 +70,6 @@ public class Dataset {
 		return records.get(index).getLable();
 	}
 
-	/**
-	 * µ¼ÈëÊı¾İ¼¯
-	 * 
-	 * @param filePath
-	 *            ÎÄ¼şÃû¼ÓÂ·¾¶
-	 * @param tag
-	 *            ×Ö¶Î·Ö¸ô·û
-	 * @param lableIndex
-	 *            Àà±êÏÂ±ê£¬´Ó0¿ªÊ¼
-	 * @return
-	 */
 	public static Dataset load(String filePath, String tag, int lableIndex) {
 		Dataset dataset = new Dataset();
 		dataset.lableIndex = lableIndex;
@@ -121,19 +94,11 @@ public class Dataset {
 			e.printStackTrace();
 			return null;
 		}
-		System.out.println("µ¼ÈëÊı¾İ:" + dataset.size());
+		System.out.println("Dataset size: " + dataset.size());
 		return dataset;
 	}
 
-	/**
-	 * Êı¾İ¼ÇÂ¼(ÊµÀı),¼ÇÂ¼ÓÉÊôĞÔºÍÀà±ğ×é³É,Àà±ğ±ØĞëÎªµÚÒ»ÁĞ»òÕß×îºóÒ»ÁĞ»òÕß¿Õ
-	 * 
-	 * @author jiqunpeng
-	 * 
-	 *         ´´½¨Ê±¼ä£º2014-6-15 ÏÂÎç8:03:29
-	 */
 	public class Record {
-		// ´æ´¢Êı¾İ
 		private double[] attrs;
 		private Double lable;
 
@@ -156,11 +121,6 @@ public class Dataset {
 			}
 		}
 
-		/**
-		 * ¸Ã¼ÇÂ¼µÄÊôĞÔ
-		 * 
-		 * @return
-		 */
 		public double[] getAttrs() {
 			return attrs;
 		}
@@ -174,23 +134,12 @@ public class Dataset {
 			return sb.toString();
 		}
 
-		/**
-		 * ¸Ã¼ÇÂ¼µÄÀà±ê
-		 * 
-		 * @return
-		 */
 		public Double getLable() {
 			if (lableIndex == -1)
 				return null;
 			return lable;
 		}
 
-		/**
-		 * ¶ÔÀà±ê½øĞĞ¶ş½øÖÆ±àÂë
-		 * 
-		 * @param n
-		 * @return
-		 */
 		public int[] getEncodeTarget(int n) {
 			String binary = Integer.toBinaryString(lable.intValue());
 			byte[] bytes = binary.getBytes();
@@ -226,12 +175,6 @@ public class Dataset {
 		System.out.println(Arrays.toString(encode));
 	}
 
-	/**
-	 * »ñÈ¡µÚindexÌõ¼ÇÂ¼
-	 * 
-	 * @param index
-	 * @return
-	 */
 	public Record getRecord(int index) {
 		return records.get(index);
 	}

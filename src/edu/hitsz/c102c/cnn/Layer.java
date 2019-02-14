@@ -5,71 +5,49 @@ import java.io.Serializable;
 import edu.hitsz.c102c.util.Log;
 import edu.hitsz.c102c.util.Util;
 
-/**
- * cnnÍøÂçµÄ²ã
- * 
- * @author jiqunpeng
- * 
- *         ´´½¨Ê±¼ä£º2014-7-8 ÏÂÎç3:58:46
- */
+
 public class Layer implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5747622503947497069L;
-	private LayerType type;// ²ãµÄÀàĞÍ
-	private int outMapNum;// Êä³ömapµÄ¸öÊı
-	private Size mapSize;// mapµÄ´óĞ¡
-	private Size kernelSize;// ¾í»ıºË´óĞ¡£¬Ö»ÓĞ¾í»ı²ãÓĞ
-	private Size scaleSize;// ²ÉÑù´óĞ¡£¬Ö»ÓĞ²ÉÑù²ãÓĞ
-	private double[][][][] kernel;// ¾í»ıºË£¬Ö»ÓĞ¾í»ı²ãºÍÊä³ö²ãÓĞ
-	private double[] bias;// Ã¿¸ömap¶ÔÓ¦Ò»¸öÆ«ÖÃ£¬Ö»ÓĞ¾í»ı²ãºÍÊä³ö²ãÓĞ
-	// ±£´æ¸÷¸öbatchµÄÊä³ömap£¬outmaps[0][0]±íÊ¾µÚÒ»Ìõ¼ÇÂ¼ÑµÁ·ÏÂµÚ0¸öÊä³ömap
+	private LayerType type;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private int outMapNum;// ï¿½ï¿½ï¿½mapï¿½Ä¸ï¿½ï¿½ï¿½
+	private Size mapSize;// mapï¿½Ä´ï¿½Ğ¡
+	private Size kernelSize;// ï¿½ï¿½ï¿½ï¿½Ë´ï¿½Ğ¡ï¿½ï¿½Ö»ï¿½Ğ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private Size scaleSize;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¡ï¿½ï¿½Ö»ï¿½Ğ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private double[][][][] kernel;// ï¿½ï¿½ï¿½ï¿½Ë£ï¿½Ö»ï¿½Ğ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private double[] bias;// Ã¿ï¿½ï¿½mapï¿½ï¿½Ó¦Ò»ï¿½ï¿½Æ«ï¿½Ã£ï¿½Ö»ï¿½Ğ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½batchï¿½ï¿½ï¿½ï¿½ï¿½mapï¿½ï¿½outmaps[0][0]ï¿½ï¿½Ê¾ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Â¼Ñµï¿½ï¿½ï¿½Âµï¿½0ï¿½ï¿½ï¿½ï¿½ï¿½map
 	private double[][][][] outmaps;
-	// ²Ğ²î£¬Óëmatlab toolboxµÄd¶ÔÓ¦
+	// ï¿½Ğ²î£¬ï¿½ï¿½matlab toolboxï¿½ï¿½dï¿½ï¿½Ó¦
 	private double[][][][] errors;
 
-	private static int recordInBatch = 0;// ¼ÇÂ¼µ±Ç°ÑµÁ·µÄÊÇbatchµÄµÚ¼¸Ìõ¼ÇÂ¼
+	private static int recordInBatch = 0;// ï¿½ï¿½Â¼ï¿½ï¿½Ç°Ñµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½batchï¿½ÄµÚ¼ï¿½ï¿½ï¿½ï¿½ï¿½Â¼
 
-	private int classNum = -1;// Àà±ğ¸öÊı
+	private int classNum = -1;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 	private Layer() {
 
 	}
 
-	/**
-	 * ×¼±¸ÏÂÒ»¸öbatchµÄÑµÁ·
-	 */
 	public static void prepareForNewBatch() {
 		recordInBatch = 0;
 	}
 
-	/**
-	 * ×¼±¸ÏÂÒ»Ìõ¼ÇÂ¼µÄÑµÁ·
-	 */
+
 	public static void prepareForNewRecord() {
 		recordInBatch++;
 	}
 
-	/**
-	 * ³õÊ¼»¯ÊäÈë²ã
-	 * 
-	 * @param mapSize
-	 * @return
-	 */
 	public static Layer buildInputLayer(Size mapSize) {
 		Layer layer = new Layer();
 		layer.type = LayerType.input;
-		layer.outMapNum = 1;// ÊäÈë²ãµÄmap¸öÊıÎª1£¬¼´Ò»ÕÅÍ¼
+		layer.outMapNum = 1;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½mapï¿½ï¿½ï¿½ï¿½Îª1ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Í¼
 		layer.setMapSize(mapSize);//
 		return layer;
 	}
 
-	/**
-	 * ¹¹Ôì¾í»ı²ã
-	 * 
-	 * @return
-	 */
 	public static Layer buildConvLayer(int outMapNum, Size kernelSize) {
 		Layer layer = new Layer();
 		layer.type = LayerType.conv;
@@ -78,12 +56,6 @@ public class Layer implements Serializable {
 		return layer;
 	}
 
-	/**
-	 * ¹¹Ôì²ÉÑù²ã
-	 * 
-	 * @param scaleSize
-	 * @return
-	 */
 	public static Layer buildSampLayer(Size scaleSize) {
 		Layer layer = new Layer();
 		layer.type = LayerType.samp;
@@ -91,11 +63,6 @@ public class Layer implements Serializable {
 		return layer;
 	}
 
-	/**
-	 * ¹¹ÔìÊä³ö²ã,Àà±ğ¸öÊı£¬¸ù¾İÀà±ğµÄ¸öÊıÀ´¾ö¶¨Êä³öµ¥ÔªµÄ¸öÊı
-	 * 
-	 * @return
-	 */
 	public static Layer buildOutputLayer(int classNum) {
 		Layer layer = new Layer();
 		layer.classNum = classNum;
@@ -110,82 +77,40 @@ public class Layer implements Serializable {
 		return layer;
 	}
 
-	/**
-	 * »ñÈ¡mapµÄ´óĞ¡
-	 * 
-	 * @return
-	 */
+
 	public Size getMapSize() {
 		return mapSize;
 	}
 
-	/**
-	 * ÉèÖÃmapµÄ´óĞ¡
-	 * 
-	 * @param mapSize
-	 */
+
 	public void setMapSize(Size mapSize) {
 		this.mapSize = mapSize;
 	}
 
-	/**
-	 * »ñÈ¡²ãµÄÀàĞÍ
-	 * 
-	 * @return
-	 */
 	public LayerType getType() {
 		return type;
 	}
-
-	/**
-	 * »ñÈ¡Êä³öÏòÁ¿¸öÊı
-	 * 
-	 * @return
-	 */
 
 	public int getOutMapNum() {
 		return outMapNum;
 	}
 
-	/**
-	 * ÉèÖÃÊä³ömapµÄ¸öÊı
-	 * 
-	 * @param outMapNum
-	 */
 	public void setOutMapNum(int outMapNum) {
 		this.outMapNum = outMapNum;
 	}
 
-	/**
-	 * »ñÈ¡¾í»ıºËµÄ´óĞ¡£¬Ö»ÓĞ¾í»ı²ãÓĞkernelSize£¬ÆäËû²ã¾ùÎ´null
-	 * 
-	 * @return
-	 */
 	public Size getKernelSize() {
 		return kernelSize;
 	}
 
-	/**
-	 * »ñÈ¡²ÉÑù´óĞ¡£¬Ö»ÓĞ²ÉÑù²ãÓĞscaleSize£¬ÆäËû²ã¾ùÎ´null
-	 * 
-	 * @return
-	 */
 	public Size getScaleSize() {
 		return scaleSize;
 	}
 
 	enum LayerType {
-		// ÍøÂç²ãµÄÀàĞÍ£ºÊäÈë²ã¡¢Êä³ö²ã¡¢¾í»ı²ã¡¢²ÉÑù²ã
 		input, output, conv, samp
 	}
 
-	/**
-	 * ¾í»ıºË»òÕß²ÉÑù²ãscaleµÄ´óĞ¡,³¤Óë¿í¿ÉÒÔ²»µÈ.ÀàĞÍ°²È«£¬¶¨ÒÔºó²»¿ÉĞŞ¸Ä
-	 * 
-	 * @author jiqunpeng
-	 * 
-	 *         ´´½¨Ê±¼ä£º2014-7-8 ÏÂÎç4:11:00
-	 */
 	public static class Size implements Serializable {
 
 		private static final long serialVersionUID = -209157832162004118L;
@@ -203,28 +128,14 @@ public class Layer implements Serializable {
 			return s.toString();
 		}
 
-		/**
-		 * Õû³ıscaleSizeµÃµ½Ò»¸öĞÂµÄSize£¬ÒªÇóthis.x¡¢this.
-		 * yÄÜ·Ö±ğ±»scaleSize.x¡¢scaleSize.yÕû³ı
-		 * 
-		 * @param scaleSize
-		 * @return
-		 */
 		public Size divide(Size scaleSize) {
 			int x = this.x / scaleSize.x;
 			int y = this.y / scaleSize.y;
 			if (x * scaleSize.x != this.x || y * scaleSize.y != this.y)
-				throw new RuntimeException(this + "²»ÄÜÕû³ı" + scaleSize);
+				throw new RuntimeException(this + "" + scaleSize);
 			return new Size(x, y);
 		}
 
-		/**
-		 * ¼õÈ¥size´óĞ¡£¬²¢xºÍy·Ö±ğ¸½¼ÓÒ»¸öÖµappend
-		 * 
-		 * @param size
-		 * @param append
-		 * @return
-		 */
 		public Size subtract(Size size, int append) {
 			int x = this.x - size.x + append;
 			int y = this.y - size.y + append;
@@ -232,11 +143,7 @@ public class Layer implements Serializable {
 		}
 	}
 
-	/**
-	 * Ëæ»ú³õÊ¼»¯¾í»ıºË
-	 * 
-	 * @param frontMapNum
-	 */
+
 	public void initKernel(int frontMapNum) {
 //		int fan_out = getOutMapNum() * kernelSize.x * kernelSize.y;
 //		int fan_in = frontMapNum * kernelSize.x * kernelSize.y;
@@ -247,12 +154,6 @@ public class Layer implements Serializable {
 				kernel[i][j] = Util.randomMatrix(kernelSize.x, kernelSize.y,true);
 	}
 
-	/**
-	 * Êä³ö²ãµÄ¾í»ıºËµÄ´óĞ¡ÊÇÉÏÒ»²ãµÄmap´óĞ¡
-	 * 
-	 * @param frontMapNum
-	 * @param size
-	 */
 	public void initOutputKerkel(int frontMapNum, Size size) {
 		kernelSize = size;
 //		int fan_out = getOutMapNum() * kernelSize.x * kernelSize.y;
@@ -264,206 +165,85 @@ public class Layer implements Serializable {
 				kernel[i][j] = Util.randomMatrix(kernelSize.x, kernelSize.y,false);
 	}
 
-	/**
-	 * ³õÊ¼»¯Æ«ÖÃ
-	 * 
-	 * @param frontMapNum
-	 */
 	public void initBias(int frontMapNum) {
 		this.bias = Util.randomArray(outMapNum);
 	}
 
-	/**
-	 * ³õÊ¼»¯Êä³ömap
-	 * 
-	 * @param batchSize
-	 */
 	public void initOutmaps(int batchSize) {
 		outmaps = new double[batchSize][outMapNum][mapSize.x][mapSize.y];
 	}
 
-	/**
-	 * ÉèÖÃmapÖµ
-	 * 
-	 * @param mapNo
-	 *            µÚ¼¸¸ömap
-	 * @param mapX
-	 *            mapµÄ¸ß
-	 * @param mapY
-	 *            mapµÄ¿í
-	 * @param value
-	 */
 	public void setMapValue(int mapNo, int mapX, int mapY, double value) {
 		outmaps[recordInBatch][mapNo][mapX][mapY] = value;
 	}
 
 	static int count = 0;
 
-	/**
-	 * ÒÔ¾ØÕóĞÎÊ½ÉèÖÃµÚmapNo¸ömapµÄÖµ
-	 * 
-	 * @param mapNo
-	 * @param outMatrix
-	 */
+
 	public void setMapValue(int mapNo, double[][] outMatrix) {
 		// Log.i(type.toString());
 		// Util.printMatrix(outMatrix);
 		outmaps[recordInBatch][mapNo] = outMatrix;
 	}
 
-	/**
-	 * »ñÈ¡µÚindex¸ömap¾ØÕó¡£´¦ÓÚĞÔÄÜ¿¼ÂÇ£¬Ã»ÓĞ·µ»Ø¸´ÖÆ¶ÔÏó£¬¶øÊÇÖ±½Ó·µ»ØÒıÓÃ£¬µ÷ÓÃ¶ËÇë½÷É÷£¬
-	 * ±ÜÃâĞŞ¸Äoutmaps£¬ÈçĞèĞŞ¸ÄÇëµ÷ÓÃsetMapValue(...)
-	 * 
-	 * @param index
-	 * @return
-	 */
 	public double[][] getMap(int index) {
 		return outmaps[recordInBatch][index];
 	}
 
-	/**
-	 * »ñÈ¡Ç°Ò»²ãµÚi¸ömapµ½µ±Ç°²ãµÚj¸ömapµÄ¾í»ıºË
-	 * 
-	 * @param i
-	 *            ÉÏÒ»²ãµÄmapÏÂ±ê
-	 * @param j
-	 *            µ±Ç°²ãµÄmapÏÂ±ê
-	 * @return
-	 */
 	public double[][] getKernel(int i, int j) {
 		return kernel[i][j];
 	}
 
-	/**
-	 * ÉèÖÃ²Ğ²îÖµ
-	 * 
-	 * @param mapNo
-	 * @param mapX
-	 * @param mapY
-	 * @param value
-	 */
 	public void setError(int mapNo, int mapX, int mapY, double value) {
 		errors[recordInBatch][mapNo][mapX][mapY] = value;
 	}
 
-	/**
-	 * ÒÔmap¾ØÕó¿éĞÎÊ½ÉèÖÃ²Ğ²îÖµ
-	 * 
-	 * @param mapNo
-	 * @param matrix
-	 */
 	public void setError(int mapNo, double[][] matrix) {
 		// Log.i(type.toString());
 		// Util.printMatrix(matrix);
 		errors[recordInBatch][mapNo] = matrix;
 	}
 
-	/**
-	 * »ñÈ¡µÚmapNo¸ömapµÄ²Ğ²î.Ã»ÓĞ·µ»Ø¸´ÖÆ¶ÔÏó£¬¶øÊÇÖ±½Ó·µ»ØÒıÓÃ£¬µ÷ÓÃ¶ËÇë½÷É÷£¬
-	 * ±ÜÃâĞŞ¸Äerrors£¬ÈçĞèĞŞ¸ÄÇëµ÷ÓÃsetError(...)
-	 * 
-	 * @param mapNo
-	 * @return
-	 */
 	public double[][] getError(int mapNo) {
 		return errors[recordInBatch][mapNo];
 	}
 
-	/**
-	 * »ñÈ¡ËùÓĞ(Ã¿¸ö¼ÇÂ¼ºÍÃ¿¸ömap)µÄ²Ğ²î
-	 * 
-	 * @return
-	 */
 	public double[][][][] getErrors() {
 		return errors;
 	}
 
-	/**
-	 * ³õÊ¼»¯²Ğ²îÊı×é
-	 * 
-	 * @param batchSize
-	 */
 	public void initErros(int batchSize) {
 		errors = new double[batchSize][outMapNum][mapSize.x][mapSize.y];
 	}
 
-	/**
-	 * 
-	 * @param lastMapNo
-	 * @param mapNo
-	 * @param kernel
-	 */
 	public void setKernel(int lastMapNo, int mapNo, double[][] kernel) {
 		this.kernel[lastMapNo][mapNo] = kernel;
 	}
 
-	/**
-	 * »ñÈ¡µÚmapNo¸ö
-	 * 
-	 * @param mapNo
-	 * @return
-	 */
 	public double getBias(int mapNo) {
 		return bias[mapNo];
 	}
 
-	/**
-	 * ÉèÖÃµÚmapNo¸ömapµÄÆ«ÖÃÖµ
-	 * 
-	 * @param mapNo
-	 * @param value
-	 */
 	public void setBias(int mapNo, double value) {
 		bias[mapNo] = value;
 	}
-
-	/**
-	 * »ñÈ¡batch¸÷¸ömap¾ØÕó
-	 * 
-	 * @return
-	 */
 
 	public double[][][][] getMaps() {
 		return outmaps;
 	}
 
-	/**
-	 * »ñÈ¡µÚrecordId¼ÇÂ¼ÏÂµÚmapNoµÄ²Ğ²î
-	 * 
-	 * @param recordId
-	 * @param mapNo
-	 * @return
-	 */
 	public double[][] getError(int recordId, int mapNo) {
 		return errors[recordId][mapNo];
 	}
 
-	/**
-	 * »ñÈ¡µÚrecordId¼ÇÂ¼ÏÂµÚmapNoµÄÊä³ömap
-	 * 
-	 * @param recordId
-	 * @param mapNo
-	 * @return
-	 */
 	public double[][] getMap(int recordId, int mapNo) {
 		return outmaps[recordId][mapNo];
 	}
 
-	/**
-	 * »ñÈ¡Àà±ğ¸öÊı
-	 * 
-	 * @return
-	 */
 	public int getClassNum() {
 		return classNum;
 	}
 
-	/**
-	 * »ñÈ¡ËùÓĞµÄ¾í»ıºË
-	 * 
-	 * @return
-	 */
 	public double[][][][] getKernel() {
 		return kernel;
 	}

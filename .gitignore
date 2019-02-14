@@ -3,3 +3,5 @@ bin/
 *MyTest.java
 data/
 model/
+*.iml
+.idea/

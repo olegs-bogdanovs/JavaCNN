@@ -4,13 +4,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * 并发运行工具
- * 
- * @author jiqunpeng
- * 
- *         创建时间：2014-6-16 下午3:33:41
- */
+
 public class ConcurenceRunner {
 
 	private static final ExecutorService exec;
@@ -60,7 +54,6 @@ public class ConcurenceRunner {
 
 		public void start() {
 			int runCpu = cpuNum < workLength ? cpuNum : 1;
-			// 分片长度向上取整
 			final CountDownLatch gate = new CountDownLatch(runCpu);
 			int fregLength = (workLength + runCpu - 1) / runCpu;
 			for (int cpu = 0; cpu < runCpu; cpu++) {
@@ -78,7 +71,7 @@ public class ConcurenceRunner {
 				};
 				ConcurenceRunner.run(task);
 			}
-			try {// 等待所有线程跑完
+			try {
 				gate.await();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
